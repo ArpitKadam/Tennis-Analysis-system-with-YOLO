@@ -40,6 +40,9 @@ def main():
     ## Mini Court
     mini_court = Minicourt(video_frames[0])
 
+    ## Convert position to minicourt coordinates
+    player_minicourt_detections, ball_mini_court_detections = mini_court.convert_bounding_box_to_minicourt_coordinates(player_detections, ball_detections, court_keypoints)
+
     ## Detect ball shots
     ball_shot_frames = ball_tracker.get_ball_shot_frames(ball_detections)
     print("Ball shot frames: ", ball_shot_frames)
@@ -53,6 +56,8 @@ def main():
 
     ## Draw minicourt on video frames
     output_video_frames = mini_court.draw_mini_court(output_video_frames)
+    output_video_frames = mini_court.draw_points_on_minicourt(output_video_frames, player_minicourt_detections)
+    output_video_frames = mini_court.draw_points_on_minicourt(output_video_frames, ball_mini_court_detections, color=(0, 255, 255))
 
     ## Draw frame number on top left corner of the video 
     for i, frame in enumerate(output_video_frames):
